@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.file-path-wrapper {
+    max-width: 500px !important;
+}
+
+//Where image are rendered
+.user-image {
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    padding: 10px;
+    img {
+        width: 300px;
+        height: 250px;
+        margin: 10px 0;
+    }
+}
