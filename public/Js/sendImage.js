@@ -2,10 +2,6 @@ const submitBtn = document.querySelector("#submit");
 const containerImage = document.querySelector(".user-image");
 
 
-
-
-
-
 //When the form is submit
 submitBtn.addEventListener("click", (event) => {
     event.preventDefault();
@@ -15,46 +11,36 @@ submitBtn.addEventListener("click", (event) => {
         console.log('Sorry this is not possible')
         return `Sorry this is not possible`
     }
+
+    //Return image to client
+
+
+
     async function postData() {
-        //Get data
-        const dataFile = await fetch(file);
-        const blob = await dataFile.blob();
-        const url = URL.createObjectURL(blob);
-
-
-        //Make the image appear to the client
-        function imageAppeard() {
-            const image = document.createElement('img');
-            image.src = url;
-            containerImage.appendChild(image);
-        }
-        imageAppeard();
-
-
-        //Send data to the server
-
-        const data = {
-            url,
-        }
+        const form = document.querySelector("#form");
+        const formData = new FormData(form);
+        console.log('FormData', formData)
 
 
         //Post data
         try {
-            const result = await fetch('/api/users', {
+            const result = await fetch('/api/uploads', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
+                body: formData,
             })
+
+            //Return image to the client
+
+            const { imagePath } = await result.json();
+            const image = document.createElement('img');
+            image.src = imagePath;
+            containerImage.appendChild(image);
+
 
 
         } catch (error) {
             console.error('Error', error)
         }
-
-
-
     }
     postData();
 

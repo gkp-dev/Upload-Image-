@@ -1,21 +1,29 @@
-const express = require('express');
-const router = express();
-const Url = require('../models/image');
+const path = require('path');
+const { Router } = require('express');
+const multer = require('multer');
 
-router.use(express.json())
 
-router.post('/', async(req, res) => {
+const router = Router();
 
-    //Send data to the database
-    let { url } = await req.body;
-    res.json('Data received')
+//Set storage Engine
+const storage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, `${process.cwd()}/public/images`)
+    },
 
-    url = new Url({
-        imageUrl: url,
-    })
-    console.log(url);
-    //await url.save()
+    filename(req, file, cb) {
+        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`)
+    }
+});
 
+
+
+//Init Upload
+const upload = multer({ storage: storage })
+
+router.post('/', upload.single('myImage'), (req, res) => {
+    const { file } = req;
+    res.json({ imagePath: `./images/${file.filename}` })
 })
 
 module.exports = router;

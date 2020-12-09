@@ -1,10 +1,11 @@
 const express = require('express');
-const app = express();
-const users = require('./routes/image');
-const db = require('./db/mongo');
+const image = require('./routes/image');
 
-app.use(express.static('public'))
-app.use('/api/users', users);
+const app = express();
+
+app.use(express.static('public'));
+app.use(express.json());
+app.use('/api/uploads', image);
 
 
 
